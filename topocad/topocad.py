@@ -3,7 +3,6 @@
 topocad
 """
 import cadquery as cq
-import time
 import numpy as np
 from math import radians, cos, sin, asin, sqrt
 
@@ -106,10 +105,11 @@ def make_topo_cad(arr, dx, dy, x_scale, z_exag, z_adder, subsample=50,
         This will be the minimum z-value and results in
         the minimum thickness in mm of the work piece.
     subsample : int
-        Interval at which to sample the x and y axes. A larger value reduces
-        detail for lower compute costs. Compute estimates for a 10m DEM with
-        shape (1729, 2127):
-        5 -> 8 hours, 10 -> 37min, 15 -> 3min
+        Interval at which to sample the x and y axes e.g.,
+        slice(None, None, subsample). A larger value reduces detail for lower
+        compute costs. Compute scales approximately linearly with the remaining
+        points in the array. Based on a simple test on an M1 macbook air, the
+        compute cost is approximately 8.34e-4 seconds per point.
     spline : bool
         Connect points with a spline (True) or linearly (False). Spline is more
         computationally expensive.
@@ -119,6 +119,10 @@ def make_topo_cad(arr, dx, dy, x_scale, z_exag, z_adder, subsample=50,
     wp : cadquery.Workplane
         Cadquery Workplane object with the 3D model. Units are in mm and
         dimensions are specified by the x_scale, z_exag, and z_adder inputs.
+    ppm : float
+        The model's points per mm in the x-axis (measure of resolution/detail)
+    aspect : str
+        The x:y aspect ratio of the model
     """
 
     wp = cq.Workplane("XZ")
@@ -127,7 +131,6 @@ def make_topo_cad(arr, dx, dy, x_scale, z_exag, z_adder, subsample=50,
     y_scale = x_scale * dy / dx
     y_offset = y_scale / len(irows)
 
-    t0 = time.time()
     for i, irow in enumerate(irows):
         if i > 0:
             wp = wp.workplane(offset=y_offset)
@@ -154,11 +157,7 @@ def make_topo_cad(arr, dx, dy, x_scale, z_exag, z_adder, subsample=50,
     else:
         wp = wp.loft(combine=False, ruled=True)
 
-    print('Render took {:.1f} minutes. '
-          'Approximately {:.1f} points per mm. '
-          'Aspect ratio (x:y) is {:.0f}:{:.0f}'
-          .format((time.time() - t0) / 60,
-                  arr.shape[1] / subsample / x_scale,
-                  x_scale, y_scale))
+    ppm = arr.shape[1] / subsample / x_scale
+    aspect = f'{x_scale:.0f}:{y_scale:.0f}'
 
-    return wp
+    return wp, ppm, aspect

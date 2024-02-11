@@ -2,3 +2,4 @@
 """
 topocad
 """
+from .topocad import *
