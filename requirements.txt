@@ -1,4 +1,5 @@
 cadquery
+jupyterlab
 matplotlib
 numpy
 rioxarray
