@@ -3,7 +3,7 @@
 Welcome to topocad! This repo contains utilities for topography-based 3D
 modeling using CAD + python scripting tools.
 
-## References:
+## Resources:
 
 1/3 arc-second (approx. 10m) DEM is from USGS: https://apps.nationalmap.gov/downloader/
 
@@ -12,3 +12,10 @@ CAD scripting is with CADQuery: https://cadquery.readthedocs.io/en/latest/index.
 Model viewer (free): https://viewer.autodesk.com/
 
 3D printing: https://www.shapeways.com/
+
+## Installation
+
+1. `git clone git@github.com:grantbuster/topocad.git`
+2. `cd topocad`
+3. `pip install -e .`
+4. `conda install -c conda-forge cadquery`
