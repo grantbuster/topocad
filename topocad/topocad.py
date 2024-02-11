@@ -37,6 +37,31 @@ def haversine(coord1, coord2):
     return c * r
 
 
+def coarsen(arr, factor):
+    """Coarsen a 2D topo array by a factor
+
+    Parameters
+    ----------
+    arr : np.ndarray
+        2D (y, x) array of elevation values in meters (z)
+    factor : int
+        Factor by which to coarsen. If the arr is (100, 100) and factor=2, the
+        output will be (50, 50)
+
+    Returns
+    -------
+    out : np.ndarray
+        Coarsened array. Each pixel is the average of factor**2 pixels from the
+        input.
+    """
+    idy = factor * (arr.shape[0] // factor)
+    idx = factor * (arr.shape[1] // factor)
+    out = arr[:idy, :idx].reshape((idy // factor, factor,
+                                   idx // factor, factor))
+    out = out.mean(axis=(1, 3))
+    return out
+
+
 def get_xz(arr, idy, dx, subsample=1, x_scale=1, z_exag=1, z_adder=1):
     """Get a tuple of many (x,z) coordinates corresponding to one row (idy) in
     the topo array.
@@ -109,7 +134,8 @@ def make_topo_cad(arr, dx, dy, x_scale, z_exag, z_adder, subsample=50,
         slice(None, None, subsample). A larger value reduces detail for lower
         compute costs. Compute scales approximately linearly with the remaining
         points in the array. Based on a simple test on an M1 macbook air, the
-        compute cost is approximately 8.34e-4 seconds per point.
+        cost for spline=False is approx 8.34e-4 seconds/point,
+        cost for spline=True is approx a lot.
     spline : bool
         Connect points with a spline (True) or linearly (False). Spline is more
         computationally expensive.
