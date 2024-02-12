@@ -1,9 +1,14 @@
 # topocad
 
 Welcome to topocad! This repo contains utilities for topography-based 3D
-modeling using CAD + python scripting tools.
+modeling using CAD + python scripting tools. To get started, check out the 
+[code](https://github.com/grantbuster/topocad/blob/main/topocad/topocad.py) 
+or the 
+[example notebook](https://github.com/grantbuster/topocad/blob/main/example/example.ipynb). 
 
-Here's an example of a 3D topo model of Boulder, Colorado. Everything is to scale and based on the 10m DEM from USGS. 
+## Gallery
+
+Here's an example of a 3D topo model of Boulder, Colorado. The three spatial axes are to-scale and based on the DEM from USGS. The model is designed to be printed at a footprint of approximately 100mm x 100mm with approximately 7 pixels per mm. The 10m DEM was coarsened by 3x to produce the model. The model took 6 minutes to create on an M1 Macbook Air. 
 
 ![alt text](https://github.com/grantbuster/topocad/blob/main/boulder_model_capture.png?raw=true)
 
