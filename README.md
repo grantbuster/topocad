@@ -20,7 +20,7 @@ CAD scripting is with CADQuery: https://cadquery.readthedocs.io/en/latest/index.
 
 Autodesk model viewer web app (free): https://viewer.autodesk.com/
 
-Services for making 3D prints of topo models: https://www.shapeways.com/
+Services for making 3D prints of topo models: https://www.shapeways.com/ | https://craftcloud3d.com/
 
 ## Installation
 
